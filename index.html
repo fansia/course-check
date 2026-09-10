@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>這堂課值得上嗎</title>
+<meta name="description" content="看到一堂線上課不確定值不值得買？填四格，一鍵把調查任務丟給 ChatGPT、Gemini、Claude 或 Perplexity，讓它去 PTT、Dcard、Threads 翻真實心得，並幫每則評價標可信度。">
+<meta name="color-scheme" content="light dark">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="這堂課值得上嗎">
+<meta property="og:description" content="填四格，一鍵把課程盡職調查丟給 AI：去 PTT、Dcard、Threads 翻真實心得，幫每則評價標可信度，最後給你買／不買的明確結論。">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="這堂課值得上嗎">
+<meta name="twitter:description" content="填四格，一鍵把課程盡職調查丟給 AI，讓它去論壇翻真實心得再給你結論。">
+
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🔍</text></svg>">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;700&display=swap">
+
+<style>
+:root{
+  color-scheme:light;
+  --paper:#F5F6F8;
+  --surface:#FFFFFF;
+  --surface-2:#EAEDF2;
+  --ink:#141C27;
+  --ink-2:#415065;
+  --muted:#6E7C90;
+  --line:#D8DEE7;
+  --line-strong:#BAC3D1;
+  --blue:#1F4E87;
+  --blue-soft:#E3EAF6;
+  --on-blue:#FFFFFF;
+  --seal:#BE3F2D;
+  --seal-soft:#F8E4E0;
+  --ok:#2E7355;
+  --warn:#8E6210;
+  --shadow:0 1px 2px rgba(20,28,39,.06),0 8px 24px -14px rgba(20,28,39,.28);
+
+  --f-display:"Instrument Serif","Noto Serif TC",Georgia,serif;
+  --f-body:"Noto Sans TC",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono","Noto Sans TC",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --paper:#111620;
+    --surface:#181E2A;
+    --surface-2:#212936;
+    --ink:#E7EBF1;
+    --ink-2:#AFBACA;
+    --muted:#8794A6;
+    --line:#2A3341;
+    --line-strong:#3C4759;
+    --blue:#8DB2E4;
+    --blue-soft:#1C2A3E;
+    --on-blue:#0E1622;
+    --seal:#E9806A;
+    --seal-soft:#33211E;
+    --ok:#6FBF97;
+    --warn:#D6A94F;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 26px -16px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#111620;
+  --surface:#181E2A;
+  --surface-2:#212936;
+  --ink:#E7EBF1;
+  --ink-2:#AFBACA;
+  --muted:#8794A6;
+  --line:#2A3341;
+  --line-strong:#3C4759;
+  --blue:#8DB2E4;
+  --blue-soft:#1C2A3E;
+  --on-blue:#0E1622;
+  --seal:#E9806A;
+  --seal-soft:#33211E;
+  --ok:#6FBF97;
+  --warn:#D6A94F;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 26px -16px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+img{max-width:100%}
+[hidden]{display:none!important}
+body{
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:15px;
+  line-height:1.72;
+  -webkit-font-smoothing:antialiased;
+}
+.shell{
+  max-width:1140px;
+  margin:0 auto;
+  padding-inline:clamp(16px,4vw,44px);
+  padding-block:clamp(28px,5vw,52px) 72px;
+  display:flex;
+  flex-direction:column;
+  gap:clamp(38px,5vw,60px);
+}
+
+/* ---------- header ---------- */
+.masthead{display:flex;flex-direction:column;gap:14px}
+.topline{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.eyebrow{
+  font-family:var(--f-mono);
+  font-size:11.5px;
+  font-weight:500;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--seal);
+  margin:0;
+}
+.rule{flex:1;height:1px;background:var(--line);min-width:24px}
+#theme{
+  font-family:var(--f-mono);font-size:11px;letter-spacing:.06em;
+  padding:5px 10px;border:1px solid var(--line-strong);border-radius:2px;
+  background:transparent;color:var(--muted);cursor:pointer;white-space:nowrap;
+}
+#theme:hover{border-color:var(--blue);color:var(--blue)}
+#theme:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+h1{
+  font-family:var(--f-display);
+  font-weight:700;
+  font-size:clamp(2.3rem,6vw,3.6rem);
+  line-height:1.12;
+  letter-spacing:.01em;
+  margin:0;
+  text-wrap:balance;
+}
+h1 em{font-style:normal;color:var(--seal)}
+.standfirst{
+  margin:0;
+  max-width:62ch;
+  color:var(--ink-2);
+  font-size:16px;
+}
+.standfirst b{color:var(--ink);font-weight:500}
+
+/* ---------- tool ---------- */
+.tool{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);
+  gap:clamp(20px,3vw,30px);
+  align-items:start;
+}
+@media (max-width:920px){.tool{grid-template-columns:minmax(0,1fr)}}
+
+.panel{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:4px;
+  box-shadow:var(--shadow);
+}
+.panel-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:12px;
+  padding:14px 20px;
+  border-bottom:1px solid var(--line);
+  flex-wrap:wrap;
+}
+.panel-title{
+  font-family:var(--f-mono);
+  font-size:12px;font-weight:600;
+  letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink);
+  margin:0;
+}
+.panel-note{font-family:var(--f-mono);font-size:11.5px;color:var(--muted);margin:0}
+.panel-body{padding:20px;display:flex;flex-direction:column;gap:18px}
+
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{
+  font-family:var(--f-mono);
+  font-size:11.5px;font-weight:500;
+  letter-spacing:.08em;
+  color:var(--ink-2);
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+}
+.field .hint{color:var(--muted);letter-spacing:0;font-weight:400;font-size:11px}
+.group-label{
+  margin:0;
+  font-family:var(--f-mono);
+  font-size:11.5px;font-weight:500;
+  letter-spacing:.08em;
+  color:var(--ink-2);
+}
+.field input,.field textarea{
+  width:100%;
+  font-family:var(--f-body);
+  font-size:14.5px;
+  line-height:1.6;
+  color:var(--ink);
+  background:var(--paper);
+  border:1px solid var(--line-strong);
+  border-radius:3px;
+  padding:9px 11px;
+  transition:border-color .15s,box-shadow .15s;
+}
+.field textarea{resize:vertical;min-height:64px}
+.field input:focus-visible,.field textarea:focus-visible{
+  outline:none;
+  border-color:var(--blue);
+  box-shadow:0 0 0 3px var(--blue-soft);
+}
+.example-flag{
+  font-family:var(--f-mono);
+  font-size:10.5px;
+  letter-spacing:.06em;
+  color:var(--warn);
+  border:1px dashed currentColor;
+  border-radius:2px;
+  padding:0 5px;
+}
+
+.modes{display:flex;border:1px solid var(--line-strong);border-radius:3px;overflow:hidden}
+.modes button{
+  flex:1;
+  font-family:var(--f-mono);
+  font-size:12px;font-weight:500;
+  padding:9px 8px;
+  border:0;background:var(--paper);color:var(--ink-2);
+  cursor:pointer;
+  transition:background .15s,color .15s;
+}
+.modes button + button{border-left:1px solid var(--line-strong)}
+.modes button[aria-pressed="true"]{background:var(--blue);color:var(--on-blue)}
+.modes button:focus-visible{outline:2px solid var(--seal);outline-offset:-2px}
+.mode-note{font-size:12.5px;color:var(--muted);margin:0}
+
+.preview{
+  margin:0;
+  font-family:var(--f-mono);
+  font-size:11.5px;
+  line-height:1.75;
+  white-space:pre-wrap;
+  word-break:break-word;
+  color:var(--ink-2);
+  background:var(--surface-2);
+  border:1px solid var(--line);
+  border-radius:3px;
+  padding:14px 15px;
+  max-height:330px;
+  overflow:auto;
+}
+.count{
+  font-family:var(--f-mono);
+  font-size:11px;color:var(--muted);
+  display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;margin:0;
+}
+.count b{color:var(--ink-2);font-weight:500;font-variant-numeric:tabular-nums}
+
+.launch{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:420px){.launch{grid-template-columns:minmax(0,1fr)}}
+.go{
+  display:flex;flex-direction:column;align-items:flex-start;gap:2px;
+  text-align:left;
+  padding:11px 14px;
+  border:1px solid var(--line-strong);
+  border-radius:3px;
+  background:var(--surface);
+  color:var(--ink);
+  cursor:pointer;
+  font-family:var(--f-body);
+  transition:border-color .15s,background .15s,transform .1s;
+}
+.go:hover{border-color:var(--blue);background:var(--blue-soft)}
+.go:active{transform:translateY(1px)}
+.go:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+.go .n{font-size:14.5px;font-weight:500;line-height:1.3}
+.go .s{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.03em;color:var(--muted)}
+.go .s.auto{color:var(--ok)}
+
+.row-actions{display:flex;gap:10px;flex-wrap:wrap}
+.btn-ghost{
+  font-family:var(--f-mono);font-size:12px;
+  padding:8px 13px;
+  border:1px solid var(--line-strong);border-radius:3px;
+  background:transparent;color:var(--ink-2);cursor:pointer;
+  transition:border-color .15s,color .15s;
+}
+.btn-ghost:hover{border-color:var(--seal);color:var(--seal)}
+.btn-ghost:focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+
+/* ---------- sections ---------- */
+.section-head{display:flex;flex-direction:column;gap:8px;margin-bottom:22px}
+h2{
+  font-family:var(--f-display);
+  font-size:clamp(1.5rem,3.4vw,2rem);
+  font-weight:700;line-height:1.25;margin:0;
+  text-wrap:balance;
+}
+.section-head p{margin:0;color:var(--ink-2);max-width:64ch}
+
+.grades{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+.grade{background:var(--surface);padding:18px 18px 20px;display:flex;flex-direction:column;gap:7px}
+.grade .mark{font-family:var(--f-display);font-size:1.9rem;line-height:1;color:var(--blue)}
+.grade.worst .mark{color:var(--seal)}
+.grade h3{margin:0;font-size:14.5px;font-weight:700;line-height:1.4}
+.grade p{margin:0;font-size:13px;color:var(--ink-2)}
+.grade .verdict{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.05em;color:var(--muted);margin-top:auto;padding-top:8px}
+.grade.worst .verdict{color:var(--seal)}
+
+.flags{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:0 30px}
+.flag{
+  display:grid;grid-template-columns:auto minmax(0,1fr);gap:0 14px;
+  padding:13px 0;
+  border-bottom:1px solid var(--line);
+  align-items:stretch;
+}
+.flag .sig{width:3px;background:var(--seal);border-radius:2px}
+.flag div{min-width:0}
+.flag strong{display:block;font-size:14.5px;font-weight:500;line-height:1.5}
+.flag span.t{display:block;font-size:12.5px;color:var(--muted);line-height:1.6}
+
+.why{
+  border-left:3px solid var(--seal);
+  background:var(--seal-soft);
+  padding:18px 20px;
+  border-radius:0 3px 3px 0;
+  display:flex;flex-direction:column;gap:10px;
+}
+.why h2{font-size:clamp(1.25rem,2.6vw,1.5rem)}
+.why p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:70ch}
+.why p b{color:var(--ink);font-weight:500}
+
+footer{
+  border-top:1px solid var(--line);
+  padding-top:18px;
+  font-size:12.5px;color:var(--muted);
+  display:flex;flex-wrap:wrap;gap:6px 18px;justify-content:space-between;
+}
+footer a{color:var(--blue)}
+
+#toast{
+  position:fixed;left:50%;bottom:26px;transform:translate(-50%,14px);
+  background:var(--ink);color:var(--paper);
+  font-family:var(--f-mono);font-size:12.5px;
+  padding:11px 17px;border-radius:3px;
+  box-shadow:0 12px 30px -12px rgba(0,0,0,.55);
+  opacity:0;pointer-events:none;
+  transition:opacity .2s,transform .2s;
+  max-width:min(90vw,440px);
+  text-align:center;line-height:1.5;
+  z-index:50;
+}
+#toast.on{opacity:1;transform:translate(-50%,0)}
+@media (prefers-reduced-motion:reduce){
+  *{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+</style>
+</head>
+<body>
+
+<div class="shell">
+
+  <header class="masthead">
+    <div class="topline">
+      <p class="eyebrow">課程盡職調查・Due Diligence</p>
+      <span class="rule"></span>
+      <button id="theme" type="button" aria-label="切換配色">配色：自動</button>
+    </div>
+    <h1>這堂課<em>值得上嗎</em></h1>
+    <p class="standfirst">看到一堂課心動，但銷售頁只會講好話、評價牆全是廠商自己挑的。填下面四格，一鍵把調查任務丟給 AI——它會去 <b>PTT、Dcard、Threads、方格子、YouTube 留言</b>翻真實心得，幫每則評價標可信度，最後告訴你：買、不買，還是先做某件事再決定。</p>
+  </header>
+
+  <section class="tool">
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">填你的資料</h2>
+        <p class="panel-note">越具體，結論越準</p>
+      </div>
+      <div class="panel-body">
+
+        <div class="field">
+          <label for="f-url">課程網址 <span class="example-flag">範例</span></label>
+          <input id="f-url" type="url" placeholder="https://..." value="https://ai.lifehacker.tw/course/">
+        </div>
+
+        <div class="field">
+          <label for="f-bg">我的背景 <span class="hint">職業／目前程度／每週能投入幾小時</span></label>
+          <textarea id="f-bg" rows="2" placeholder="例：行銷企劃，會用 ChatGPT 但沒碰過終端機，每週能投入 5 小時">行銷企劃，會用 ChatGPT 但沒碰過終端機，每週能投入 5 小時</textarea>
+        </div>
+
+        <div class="field">
+          <label for="f-goal">我想解決的問題 <span class="hint">具體到一件事，不要寫「想學 AI」</span></label>
+          <textarea id="f-goal" rows="2" placeholder="例：想把每月報價單和請款流程自動化">想把每月報價單和請款流程自動化，不要再手動複製貼上</textarea>
+        </div>
+
+        <div class="field">
+          <label for="f-budget">預算上限</label>
+          <input id="f-budget" type="text" placeholder="例：NT$10,000" value="NT$10,000">
+        </div>
+
+        <div class="field">
+          <p class="group-label" id="mode-label">Prompt 版本</p>
+          <div class="modes" role="group" aria-labelledby="mode-label">
+            <button id="mode-full" type="button" data-mode="full" aria-pressed="true">完整版</button>
+            <button id="mode-lite" type="button" data-mode="lite" aria-pressed="false">精簡版</button>
+          </div>
+          <p class="mode-note" id="mode-note">完整版：六段輸出、含證據分級與紅旗清單。太長無法塞進網址，按鈕會幫你複製，開好新對話後貼上即可。</p>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-head">
+        <h2 class="panel-title">送出調查</h2>
+        <p class="panel-note">需先登入該平台</p>
+      </div>
+      <div class="panel-body">
+
+        <div class="launch">
+          <button class="go" type="button" data-target="chatgpt">
+            <span class="n">ChatGPT</span>
+            <span class="s" data-slot="hint">已複製，貼上即可</span>
+          </button>
+          <button class="go" type="button" data-target="gemini">
+            <span class="n">Gemini</span>
+            <span class="s" data-slot="hint">已複製，貼上即可</span>
+          </button>
+          <button class="go" type="button" data-target="claude">
+            <span class="n">Claude</span>
+            <span class="s" data-slot="hint">已複製，貼上即可</span>
+          </button>
+          <button class="go" type="button" data-target="perplexity">
+            <span class="n">Perplexity</span>
+            <span class="s" data-slot="hint">已複製，貼上即可</span>
+          </button>
+        </div>
+
+        <div class="row-actions">
+          <button class="btn-ghost" type="button" id="btn-copy">複製 Prompt</button>
+          <button class="btn-ghost" type="button" id="btn-reset">清空欄位</button>
+        </div>
+
+        <p class="count"><span>Prompt 預覽</span><span><b id="chars">0</b> 字</span></p>
+        <pre class="preview" id="preview" aria-live="polite">載入中…</pre>
+
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>它會幫每則評價蓋章</h2>
+      <p>AI 上網查評價最常見的失敗，是抓到廠商官網那面「100+ 則學員好評」的牆，就下結論說口碑很好。所以這段 prompt 強制它替每一則引用標上來源等級，並在報告裡標示出來。</p>
+    </div>
+    <div class="grades">
+      <div class="grade">
+        <span class="mark">A</span>
+        <h3>第三方獨立長文心得</h3>
+        <p>寫得出具體細節與卡關處，沒有折扣碼、沒有導購語氣。</p>
+        <p class="verdict">可信度最高</p>
+      </div>
+      <div class="grade">
+        <span class="mark">B</span>
+        <h3>論壇與社群零散討論</h3>
+        <p>PTT、Dcard 的推文與 Threads 留言。單則不可靠，看的是重複出現的抱怨。</p>
+        <p class="verdict">看趨勢，不看單則</p>
+      </div>
+      <div class="grade">
+        <span class="mark">C</span>
+        <h3>帶連結的推薦文</h3>
+        <p>附聯盟行銷連結、專屬折扣碼，或通篇只有結論沒有過程。</p>
+        <p class="verdict">當廣告看</p>
+      </div>
+      <div class="grade worst">
+        <span class="mark">D</span>
+        <h3>廠商官網的學員見證</h3>
+        <p>由賣課的人挑選、編輯後放上自家網站的證言，本質是行銷素材。</p>
+        <p class="verdict">不得作為口碑證據</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="section-head">
+      <h2>報告最後會逐項檢查這八個紅旗</h2>
+      <p>每一項標成 ✅ 沒問題、⚠️ 要留意、🚩 高風險。這八項不是憑感覺列的，是線上課程消費爭議裡最常反覆出現的幾種模式。</p>
+    </div>
+    <div class="flags">
+      <div class="flag"><span class="sig"></span><div><strong>飢餓行銷與倒數計時</strong><span class="t">「最後 3 小時」但每個月都在跑，代表你被時間壓力推著做決定。</span></div></div>
+      <div class="flag"><span class="sig"></span><div><strong>沒有退費政策</strong><span class="t">或退費條件藏在很深的地方、附帶一堆但書。</span></div></div>
+      <div class="flag"><span class="sig"></span><div><strong>承諾收入或具體成效</strong><span class="t">「三個月接案破十萬」這種話，本身就是最強的紅旗。</span></div></div>
+      <div class="flag"><span class="sig"></span><div><strong>只找得到廠商自營證言</strong><span class="t">第三方場域一片空白，通常代表課太新或社群封閉。</span></div></div>
+      <div class="flag"><span class="sig"></span><div><strong>課還沒做完就開賣</strong><span class="t">課綱上有單元標著「製作中」「即將上線」，你買的是期貨。</span></div></div>
+      <div class="flag"><span class="sig"></span><div><strong>社群在私域，查不到真實回饋</strong><span class="t">討論全在 Discord／LINE 群，外面自然搜不到負評。</span></div></div>
+      <div class="flag"><span class="sig"></span><div><strong>講師沒有可查證的實作成果</strong><span class="t">只有「教過幾千人」，找不到他自己做出來的東西。</span></div></div>
+      <div class="flag"><span class="sig"></span><div><strong>內容能被免費資源取代</strong><span class="t">同一位講師的免費影片或官方文件已經涵蓋八成。</span></div></div>
+    </div>
+  </section>
+
+  <section class="why">
+    <h2>查不到負評，不等於口碑好</h2>
+    <p>這是整段 prompt 最重要的一條規則。台灣的線上課程社群大多在 Discord、LINE 群和私密 FB 社團，公開負評本來就稀薄；課程越新，樣本越少。所以 prompt 明文要求 AI：<b>找不到就直說找不到，並解釋為什麼</b>，不准用「整體評價正面」這種空話填補資料空白，也不准編造引用或連結。</p>
+    <p>這時候真正有價值的，會是報告的最後兩段——<b>替代方案的機會成本</b>（免費資源夠不夠用），以及<b>「先做這件事再決定」</b>的具體下一步。</p>
+  </section>
+
+  <footer>
+    <span>把網址分享給正在猶豫要不要買課的朋友。</span>
+    <span>AI 產出的調查結果仍需自行查證，連結請點開確認。</span>
+  </footer>
+</div>
+
+<div id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  "use strict";
+
+  var TARGETS = {
+    chatgpt:    {name:"ChatGPT",    base:"https://chatgpt.com/",             param:"q"},
+    gemini:     {name:"Gemini",     base:"https://gemini.google.com/app",    param:null},
+    claude:     {name:"Claude",     base:"https://claude.ai/new",            param:"q"},
+    perplexity: {name:"Perplexity", base:"https://www.perplexity.ai/search", param:"q"}
+  };
+
+  var URL_BUDGET = 7000;
+
+  var ids = ["f-url","f-bg","f-goal","f-budget"];
+  var el = {};
+  ids.forEach(function(i){ el[i] = document.getElementById(i); });
+  var preview  = document.getElementById("preview");
+  var chars    = document.getElementById("chars");
+  var modeNote = document.getElementById("mode-note");
+  var toast    = document.getElementById("toast");
+  var mode     = "full";
+
+  var NOTES = {
+    full: "完整版：六段輸出、含證據分級與紅旗清單。太長無法塞進網址，按鈕會幫你複製，開好新對話後貼上即可。",
+    lite: "精簡版：壓到能塞進網址。ChatGPT、Claude、Perplexity 會自動帶入問題，開了就直接跑。"
+  };
+
+  function v(id){
+    var s = (el[id].value || "").trim();
+    return s || "（我還沒填，請先問我）";
+  }
+
+  function buildFull(){
+    return [
+"你是一位幫我做「線上課程盡職調查」的研究員。我正在考慮買一堂課，請幫我查清楚它到底值不值得上。",
+"",
+"## 我的資料",
+"- 課程網址：" + v("f-url"),
+"- 我的背景：" + v("f-bg"),
+"- 我想解決的問題：" + v("f-goal"),
+"- 預算上限：" + v("f-budget"),
+"",
+"## 執行步驟",
+"",
+"第 1 步：讀官方頁面，抓出可驗證的事實",
+"抓取課程頁與相關子頁，整理出：定價（原價／優惠價／是否買斷）、有無退費政策、單元數與時數、最後更新日期、講師背景、交付形式（影片／文件／社群／直播）、售後支援範圍。",
+"特別注意「完成度」訊號：有沒有單元標示「製作中」「即將上線」、學員作品或成果頁有多少件、作者是不是大多是講師本人。",
+"",
+"第 2 步：去第三方場域找真實聲音",
+"針對每個平台各下 2-3 組不同關鍵字（課名、講師名、課名+心得、講師名+退費、講師名+難、講師名+踩雷），至少涵蓋：",
+"- PTT（site:ptt.cc）",
+"- Dcard（site:dcard.tw）",
+"- Threads（site:threads.com）",
+"- Facebook 公開社團與貼文",
+"- 方格子 vocus、Medium、個人部落格的心得文",
+"- YouTube 相關影片的留言區",
+"- X、小紅書、Reddit（如果是國際課程）",
+"正評向與負評向的關鍵字都要搜，不要只搜好話。",
+"",
+"第 3 步：分級證據（這步最重要，不要跳過）",
+"把找到的每一則評價標上來源等級，並在報告中明確標示：",
+"- A 級：第三方獨立長文心得（有具體細節、寫出困難點、非導購文）",
+"- B 級：論壇／社群的零散討論與留言",
+"- C 級：有聯盟行銷連結、折扣碼或明顯導購語氣的推薦文",
+"- D 級：廠商自己網站上的評價牆／學員見證。這是行銷素材、經過篩選，不得作為「口碑良好」的證據，只能用來看他們挑哪些話出來講。",
+"",
+"第 4 步：挖出被修飾過的摩擦訊號",
+"就算在廠商自己的證言裡也常藏著真話。找出這類句子並原文引用：「很硬」「撞牆」「工程不小」「差點放棄」「跟不上」「本來以為…結果」。",
+"同時檢查課程頁自己寫的「這堂課不適合誰」「不會提供什麼」，那通常是最誠實的一段。",
+"",
+"第 5 步：找替代方案的機會成本",
+"查清楚：同一位講師有沒有免費的 YouTube／部落格／電子報涵蓋同樣內容？有沒有更便宜的入門版（迷你課、單堂）？市場上有沒有同主題的競品課？官方文件或開源教材能不能免費取代？",
+"如果「免費資源 + 自學」就能達成我的目標，請直接說。",
+"",
+"## 誠實規範（違反的話這份報告就沒有價值）",
+"1. 絕對不要編造評價、引用或連結。每一則引用都要附上可點擊的真實網址。",
+"2. 找不到負評時，直接說「找不到」，並解釋為什麼（課程太新、社群在 Discord／LINE 等私域、討論量本來就低）。不要用「整體評價正面」來填補資料空白——沒有負評不等於口碑好。",
+"3. 明確區分「查證到的事實」與「我的推論」，推論要標注。",
+"4. 官方頁面沒公開價格就說沒公開，不要猜一個數字當事實。",
+"",
+"## 輸出格式",
+"一、這堂課實際上是什麼（3-5 句，去掉行銷話術後的白話版）",
+"二、可驗證的事實表（價格／時數／完成度／支援範圍／更新日期）",
+"三、第三方評價彙整：正面共識、負面與摩擦點（各附來源等級與連結），以及查證結論（資料量足夠或不足，說明原因）",
+"四、對「我」的適配度分析：哪幾章對我是全新的、哪幾章是複習；我最可能卡住的地方是哪一段、為什麼；我的時間投入夠不夠",
+"五、紅旗清單，逐項標示 ✅／⚠️／🚩：飢餓行銷與倒數計時、無退費政策、承諾收入或效果、只有廠商自營證言、課程尚未完成卻已開賣、社群封閉查不到真實回饋、講師無可查證的實作成果、內容可被免費資源取代",
+"六、結論：買／不買／先做這件事再決定。給我一個明確建議，不要兩邊都講。如果建議「先做某件事」，請具體到我今天就能執行。",
+"",
+"最後附上完整的 Sources 連結清單。"
+    ].join("\n");
+  }
+
+  function buildLite(){
+    return [
+"請幫我查這堂線上課程值不值得上：" + v("f-url"),
+"我的背景：" + v("f-bg") + "；我想解決：" + v("f-goal") + "；預算：" + v("f-budget"),
+"",
+"請做四件事：",
+"1. 讀官方頁面，列出可驗證事實：定價、是否買斷、退費政策、單元數、最後更新，以及有沒有單元還標著「製作中」。",
+"2. 上網搜第三方評價，至少涵蓋 PTT(site:ptt.cc)、Dcard(site:dcard.tw)、Threads、方格子、部落格心得、YouTube 留言。正面與負面關鍵字都要搜（課名+心得、講師+退費、講師+踩雷）。",
+"3. 幫每則評價標來源等級：A=第三方獨立長文心得、B=論壇零散討論、C=有折扣碼或聯盟連結的導購文、D=廠商自己網站上的學員見證（行銷素材，不能當口碑證據）。並找出被修飾過的摩擦訊號，例如「很硬」「撞牆」「差點放棄」，原文引用。",
+"4. 查替代方案：同一位講師有沒有免費影片或部落格涵蓋同樣內容？有沒有更便宜的入門版？免費資源能不能取代？",
+"",
+"規則：不准編造評價或連結，每則引用附真實網址。找不到負評就直說「找不到」並解釋原因（課太新、社群在私域），不要用「整體評價正面」填補空白——沒有負評不等於口碑好。",
+"",
+"最後給我：適配度分析（哪幾章對我是全新的、我最可能卡在哪）、紅旗清單，以及明確結論：買／不買／先做這件事再決定。"
+    ].join("\n");
+  }
+
+  function current(){ return mode === "lite" ? buildLite() : buildFull(); }
+
+  function canPrefill(key, text){
+    var t = TARGETS[key];
+    if (!t.param) return false;
+    return encodeURIComponent(text).length <= URL_BUDGET;
+  }
+
+  function render(){
+    var text = current();
+    preview.textContent = text;
+    chars.textContent = String(text.length);
+    modeNote.textContent = NOTES[mode];
+
+    Array.prototype.forEach.call(document.querySelectorAll(".go"), function(btn){
+      var key = btn.getAttribute("data-target");
+      var slot = btn.querySelector('[data-slot="hint"]');
+      if (canPrefill(key, text)) {
+        slot.textContent = "自動帶入問題";
+        slot.classList.add("auto");
+      } else {
+        slot.textContent = "已複製，貼上即可";
+        slot.classList.remove("auto");
+      }
+    });
+    save();
+  }
+
+  function say(msg){
+    toast.textContent = msg;
+    toast.classList.add("on");
+    clearTimeout(say._t);
+    say._t = setTimeout(function(){ toast.classList.remove("on"); }, 3800);
+  }
+
+  function copy(text){
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        return navigator.clipboard.writeText(text);
+      }
+    } catch(e){}
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = text;
+      ta.setAttribute("readonly","");
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      document.body.removeChild(ta);
+    } catch(e){}
+    return Promise.resolve();
+  }
+
+  Array.prototype.forEach.call(document.querySelectorAll(".go"), function(btn){
+    btn.addEventListener("click", function(){
+      var key = btn.getAttribute("data-target");
+      var t = TARGETS[key];
+      var text = current();
+      var prefill = canPrefill(key, text);
+
+      copy(text);
+
+      var href = t.base;
+      if (prefill) href += (href.indexOf("?") > -1 ? "&" : "?") + t.param + "=" + encodeURIComponent(text);
+      window.open(href, "_blank", "noopener");
+
+      var isMac = /Mac|iP(hone|ad|od)/.test(navigator.platform || navigator.userAgent);
+      say(prefill
+        ? ("已在新分頁開啟 " + t.name + "，問題已帶入。Prompt 也複製好了，沒帶到就直接貼上。")
+        : ("Prompt 已複製，已開啟 " + t.name + "。在輸入框按 " + (isMac ? "⌘V" : "Ctrl+V") + " 貼上送出。"));
+    });
+  });
+
+  document.getElementById("btn-copy").addEventListener("click", function(){
+    copy(current());
+    say("Prompt 已複製到剪貼簿。");
+  });
+
+  document.getElementById("btn-reset").addEventListener("click", function(){
+    ids.forEach(function(i){ el[i].value = ""; });
+    render();
+    el["f-url"].focus();
+    say("欄位已清空。");
+  });
+
+  Array.prototype.forEach.call(document.querySelectorAll(".modes button"), function(b){
+    b.addEventListener("click", function(){
+      mode = b.getAttribute("data-mode");
+      Array.prototype.forEach.call(document.querySelectorAll(".modes button"), function(x){
+        x.setAttribute("aria-pressed", String(x === b));
+      });
+      render();
+    });
+  });
+
+  ids.forEach(function(i){ el[i].addEventListener("input", render); });
+
+  /* theme toggle: auto -> light -> dark */
+  var themeBtn = document.getElementById("theme");
+  var THEMES = ["auto","light","dark"];
+  var LABEL = {auto:"配色：自動", light:"配色：淺色", dark:"配色：深色"};
+  var theme = "auto";
+  function applyTheme(){
+    if (theme === "auto") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", theme);
+    themeBtn.textContent = LABEL[theme];
+  }
+  themeBtn.addEventListener("click", function(){
+    theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length];
+    applyTheme();
+    save();
+  });
+
+  function save(){
+    try {
+      var o = {mode:mode, theme:theme};
+      ids.forEach(function(i){ o[i] = el[i].value; });
+      localStorage.setItem("course-check", JSON.stringify(o));
+    } catch(e){}
+  }
+  function load(){
+    try {
+      var raw = localStorage.getItem("course-check");
+      if (!raw) return;
+      var o = JSON.parse(raw);
+      if (!o || typeof o !== "object") return;
+      ids.forEach(function(i){ if (typeof o[i] === "string") el[i].value = o[i]; });
+      if (o.mode === "lite" || o.mode === "full") {
+        mode = o.mode;
+        Array.prototype.forEach.call(document.querySelectorAll(".modes button"), function(x){
+          x.setAttribute("aria-pressed", String(x.getAttribute("data-mode") === mode));
+        });
+      }
+      if (THEMES.indexOf(o.theme) > -1) theme = o.theme;
+    } catch(e){}
+  }
+
+  load();
+  applyTheme();
+  render();
+})();
+</script>
+</body>
+</html>
