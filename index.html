@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>這堂課值得上嗎</title>
-<meta name="description" content="看到一堂線上課不確定值不值得買？填四格，一鍵把調查任務丟給 ChatGPT、Gemini、Claude 或 Perplexity，讓它去 PTT、Dcard、Threads 翻真實心得，並幫每則評價標可信度。">
+<meta name="description" content="看到一堂線上課不確定值不值得買？填四格，一鍵把調查任務丟給 ChatGPT、Gemini、Claude 或 Perplexity，讓它去 PTT、Dcard、Threads 翻真實心得，並幫每則評價標可信度。另有專給 Meta AI 的 Threads 版 prompt，撈出外部爬蟲抓不到的零散評價。">
 <meta name="color-scheme" content="light dark">
 
 <meta property="og:type" content="website">
@@ -278,6 +278,8 @@ h1 em{font-style:normal;color:var(--seal)}
 .go .n{font-size:14.5px;font-weight:500;line-height:1.3}
 .go .s{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.03em;color:var(--muted)}
 .go .s.auto{color:var(--ok)}
+.go.wide{grid-column:1/-1}
+@media (max-width:420px){.go.wide{grid-column:auto}}
 
 .row-actions{display:flex;gap:10px;flex-wrap:wrap}
 .btn-ghost{
@@ -332,6 +334,8 @@ h2{
 .why h2{font-size:clamp(1.25rem,2.6vw,1.5rem)}
 .why p{margin:0;font-size:13.5px;color:var(--ink-2);max-width:70ch}
 .why p b{color:var(--ink);font-weight:500}
+.why p code{font-family:var(--f-mono);font-size:12px;background:var(--surface-2);border:1px solid var(--line);border-radius:2px;padding:1px 4px}
+.why p.caveat{font-size:12.5px;color:var(--muted);border-left:2px solid var(--line-strong);padding-left:12px}
 
 footer{
   border-top:1px solid var(--line);
@@ -407,6 +411,7 @@ footer a{color:var(--blue)}
           <div class="modes" role="group" aria-labelledby="mode-label">
             <button id="mode-full" type="button" data-mode="full" aria-pressed="true">完整版</button>
             <button id="mode-lite" type="button" data-mode="lite" aria-pressed="false">精簡版</button>
+            <button id="mode-threads" type="button" data-mode="threads" aria-pressed="false">Threads 版</button>
           </div>
           <p class="mode-note" id="mode-note">完整版：六段輸出、含證據分級與紅旗清單。太長無法塞進網址，按鈕會幫你複製，開好新對話後貼上即可。</p>
         </div>
@@ -436,6 +441,10 @@ footer a{color:var(--blue)}
           </button>
           <button class="go" type="button" data-target="perplexity">
             <span class="n">Perplexity</span>
+            <span class="s" data-slot="hint">已複製，貼上即可</span>
+          </button>
+          <button class="go wide" type="button" data-target="meta">
+            <span class="n">Meta AI —— 專撈 Threads 上的零散評價</span>
             <span class="s" data-slot="hint">已複製，貼上即可</span>
           </button>
         </div>
@@ -522,6 +531,8 @@ footer a{color:var(--blue)}
     <h2>查不到負評，不等於口碑好</h2>
     <p>這是整段 prompt 最重要的一條規則。台灣的線上課程社群大多在 Discord、LINE 群和私密 FB 社團，公開負評本來就稀薄；課程越新，樣本越少。所以 prompt 明文要求 AI：<b>找不到就直說找不到，並解釋為什麼</b>，不准用「整體評價正面」這種空話填補資料空白，也不准編造引用或連結。</p>
     <p>這時候真正有價值的，會是報告的最後兩段——<b>替代方案的機會成本</b>（免費資源夠不夠用），以及<b>「先做這件事再決定」</b>的具體下一步。</p>
+    <p>不過還有一個例外值得多跑一輪：<b>Threads 上其實有評價，只是外部爬不到</b>。ChatGPT、Gemini 那些去搜 <code>site:threads.com</code> 經常空手而回，而真話往往不在主貼文，是在留言串裡。所以多了一個「Threads 版」prompt，配 Meta AI 用——它讀得到自家平台的貼文與留言。這一輪不下結論，只負責把清單撈出來，跑完貼回完整版的報告當 B 級證據。</p>
+    <p class="caveat">已知限制：Meta AI 給貼文連結的紀錄不穩，有時會把內容講出來卻附不出出處。所以 Threads 版 prompt 明文要求「拿不出連結的不要混進清單」——沒有連結的引用，你沒辦法自己點開查證，就不該當證據用。</p>
   </section>
 
   <footer>
@@ -540,7 +551,8 @@ footer a{color:var(--blue)}
     chatgpt:    {name:"ChatGPT",    base:"https://chatgpt.com/",             param:"q"},
     gemini:     {name:"Gemini",     base:"https://gemini.google.com/app",    param:null},
     claude:     {name:"Claude",     base:"https://claude.ai/new",            param:"q"},
-    perplexity: {name:"Perplexity", base:"https://www.perplexity.ai/search", param:"q"}
+    perplexity: {name:"Perplexity", base:"https://www.perplexity.ai/search", param:"q"},
+    meta:       {name:"Meta AI",    base:"https://www.meta.ai/",             param:null}
   };
 
   var URL_BUDGET = 7000;
@@ -556,7 +568,8 @@ footer a{color:var(--blue)}
 
   var NOTES = {
     full: "完整版：六段輸出、含證據分級與紅旗清單。太長無法塞進網址，按鈕會幫你複製，開好新對話後貼上即可。",
-    lite: "精簡版：壓到能塞進網址。ChatGPT、Claude、Perplexity 會自動帶入問題，開了就直接跑。"
+    lite: "精簡版：壓到能塞進網址。ChatGPT、Claude、Perplexity 會自動帶入問題，開了就直接跑。",
+    threads: "Threads 版：只做一件事——把 Threads、IG、FB 上的零散評價撈出來，不下結論。配 Meta AI 用（它讀得到自家貼文與留言串，外部爬蟲讀不到）。跑完把清單貼回完整版的報告當 B 級證據。"
   };
 
   function v(id){
@@ -653,7 +666,62 @@ footer a{color:var(--blue)}
     ].join("\n");
   }
 
-  function current(){ return mode === "lite" ? buildLite() : buildFull(); }
+  function buildThreads(){
+    return [
+"你讀得到 Threads、Instagram 和 Facebook 上的公開貼文，這是外部搜尋引擎抓不到的部分。這一輪請你只做一件事：把這堂線上課程在 Meta 平台上的零散評價全部撈出來，不要下買或不買的結論。",
+"",
+"## 調查對象",
+"- 課程網址：" + v("f-url"),
+"- 我的背景：" + v("f-bg"),
+"- 我想解決的問題：" + v("f-goal"),
+"",
+"如果從網址看不出課名與講師名，先告訴我你認定的課名和講師名（含他的社群帳號），再開始搜。",
+"",
+"## 要搜的地方",
+"1. Threads 的貼文「以及留言串」——很多真話藏在別人貼文下面的回覆裡，不要只看主貼文。",
+"2. Instagram 的公開貼文、Reels 留言區。",
+"3. Facebook 的公開貼文與公開社團，尤其是同主題的學習社團、接案社團、轉職社團。",
+"",
+"## 要搜的關鍵字（每組都要試，不要只搜好話）",
+"- 課名、講師名、講師的帳號名稱，含常見縮寫與錯字寫法",
+"- 課名／講師名 + 心得、推薦、值得嗎、划算、上完、學完、筆記、進度",
+"- 課名／講師名 + 後悔、雷、踩雷、退費、退款、太貴、跟不上、放棄、失望、騙",
+"- 課名／講師名 + 折扣碼、團購、優惠、限時（這組是用來抓業配的，不是抓評價）",
+"",
+"## 每一則都要標這三件事",
+"- 連結：貼文的實際網址。拿不出連結的不要混進清單，要另外標「無連結，不可採信」。",
+"- 帳號性質：一般使用者／講師本人或其團隊／帶折扣碼或聯盟連結的業配／只發過這一篇的新帳號。",
+"- 時間：大約發文日期，讓我對得上是哪一期的學員。",
+"",
+"## 特別要挖的東西",
+"- 留言區裡「被已讀不回的提問」：有人問內容、問退費、問更新進度，然後沒有回應。那本身就是訊號。",
+"- 被修飾過的摩擦訊號，請原文引用：「很硬」「撞牆」「差點放棄」「跟不上」「本來以為…結果」「還沒看完」「買了放著」。",
+"- 「買了放著沒看」這類自嘲——最常見、也最少被當成負評的訊號。",
+"- 講師本人在社群上的言行：怎麼回應質疑，有沒有情緒化回嗆、刪留言或關閉留言。",
+"- 有多少個「彼此獨立」的帳號提到這堂課？如果好評集中在少數互相追蹤的帳號、或都帶同一組折扣碼，直接講出來。",
+"",
+"## 誠實規範",
+"1. 不要把一般網頁搜尋結果、新聞或部落格當成 Threads／IG 貼文來報。分開列，並標明來源平台。",
+"2. 引用一律原文照貼，可以截斷，但不要改寫、不要潤飾、不要翻譯。",
+"3. 找不到就說找不到，並告訴我你實際下了哪些關鍵字、以及為什麼撈不到（課太新、討論在私密社團或 LINE 群、帳號非公開）。不要用「整體評價正面」填補空白——沒有負評不等於口碑好。",
+"4. 這一輪不要下買／不買的結論，也不要幫課程做總評。你只負責蒐集證據。",
+"",
+"## 輸出格式",
+"一、搜尋紀錄：你實際下了哪些關鍵字、搜了哪幾個平台、各撈到幾則。",
+"二、評價清單表格，欄位為：平台｜帳號性質｜日期｜原文摘錄｜連結。正面與負面分成兩區。",
+"三、摩擦訊號的原文引用，每則附連結。",
+"四、講師在社群上的言行觀察。",
+"五、樣本量結論一句話：討論量足夠／偏少／幾乎沒有，並說明理由。",
+"",
+"最後把「二、評價清單」另外整理成一段可以直接複製的純文字，我要貼回另一份完整的課程調查報告，當作 B 級證據使用。"
+    ].join("\n");
+  }
+
+  function current(){
+    if (mode === "lite")    return buildLite();
+    if (mode === "threads") return buildThreads();
+    return buildFull();
+  }
 
   function canPrefill(key, text){
     var t = TARGETS[key];
@@ -782,7 +850,7 @@ footer a{color:var(--blue)}
       var o = JSON.parse(raw);
       if (!o || typeof o !== "object") return;
       ids.forEach(function(i){ if (typeof o[i] === "string") el[i].value = o[i]; });
-      if (o.mode === "lite" || o.mode === "full") {
+      if (o.mode === "lite" || o.mode === "full" || o.mode === "threads") {
         mode = o.mode;
         Array.prototype.forEach.call(document.querySelectorAll(".modes button"), function(x){
           x.setAttribute("aria-pressed", String(x.getAttribute("data-mode") === mode));
