@@ -1,6 +1,6 @@
 # 這堂課值得上嗎
 
-> **線上版 → https://fansia.github.io/course-check/**
+> **線上版 → https://fansia.github.io/course-check/**（English → `/course-check/en/`）
 
 看到一堂線上課心動，但銷售頁只會講好話、評價牆全是廠商自己挑的。
 
@@ -8,7 +8,7 @@
 
 另有一版專給 **Meta AI** 的 prompt，專門撈 Threads、IG、FB 上那些外部爬蟲抓不到的零散評價。
 
-單一 `index.html`，沒有建置流程、沒有相依套件。
+頁面本身就是產品頁：上面是工具，下面是說明與常見問題。中文在 `index.html`、英文在 `en/index.html`（介面是英文，送給 AI 的 prompt 維持中文，因為要搜的是台灣社群）。沒有建置流程、沒有相依套件。
 
 ## Prompt 在做什麼
 
@@ -104,7 +104,8 @@ gh api -X POST repos/:owner/course-check/pages \
 - **Prompt 內容**在 `index.html` 底部的 `buildFull()` 與 `buildLite()` 兩個函式裡，純字串陣列，直接改。
 - **要加平台**：在 `TARGETS` 物件加一筆，`param` 填該站接收問題的 query 參數名稱，沒有就填 `null`（按鈕會自動改成「複製後貼上」）。
 - **URL 長度上限**由 `URL_BUDGET` 控制（預設 7000，指的是 encode 後的長度）。超過就不做預填，改走剪貼簿。
-- **配色**：token 全部在 `:root`，深色主題在 `@media (prefers-color-scheme:dark)` 與 `:root[data-theme="dark"]` 各覆寫一次。右上角有自動／淺色／深色切換。
+- **配色**：沿用 Eric 個人網站的樣式（設計參考 [Kami](https://kami.tw93.fun)，中文字體霞鶩文楷 TC）。token 全部在 `:root`，深色主題在 `@media (prefers-color-scheme:dark)` 與 `:root[data-theme="dark"]` 各覆寫一次。右上角是月亮／太陽切換，選擇會記住。
+- **中英文要一起改**：改了 `index.html` 的文案或工具，`en/index.html` 也要同步；兩頁的 prompt 產生邏輯必須完全一樣。
 - 填過的內容存在 `localStorage`，下次開還在。
 
 ## 已知限制
