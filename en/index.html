@@ -253,6 +253,10 @@ footer { display: flex; justify-content: space-between; gap: 48px; padding-top: 
 .colophon { text-align: right; }
 .colophon .links { justify-content: flex-end; }
 .ethos { font-style: italic; color: var(--olive); font-size: 14px; max-width: 600px; margin: 12px 0 0 auto; }
+.ethos { text-wrap: balance; }
+.ethos span { white-space: nowrap; }
+.ethos span:not(:last-child)::after { content: " /"; }
+@media (max-width: 360px) { .ethos span { white-space: normal; } }
 
 /* ========== Responsive ========== */
 @media (max-width: 880px) {
@@ -742,7 +746,7 @@ html[data-turn]::view-transition-group(root) { animation-duration: 0s; }
         <input id="sub-email" type="email" name="email" placeholder="Your email" required autocomplete="email">
         <button class="btn-primary" type="submit">Subscribe</button>
       </form>
-        <p class="sub-note">Opens Substack to confirm. One more click and you're in. · <a href="https://ericyensc.substack.com" lang="zh-Hant">看更多 Eric 的文章</a></p>
+        <p class="sub-note">Opens Substack to confirm. One more click and you're in.</p>
       </div>
     </div>
   </section>
