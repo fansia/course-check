@@ -23,6 +23,8 @@ addEventListener("pagereveal", function (e) {
   if (!e.viewTransition) return;
   var dir = null;
   try { dir = sessionStorage.getItem("turn"); sessionStorage.removeItem("turn"); } catch (err) {}
+  /* Skipping rejects the transition's promises; swallow that, it is expected. */
+  e.viewTransition.ready.catch(function () {}); e.viewTransition.finished.catch(function () {});
   if (!dir || matchMedia("(prefers-reduced-motion: reduce)").matches) { e.viewTransition.skipTransition(); return; }
   var root = document.documentElement;
   root.dataset.turn = dir;
