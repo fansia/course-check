@@ -296,7 +296,7 @@ footer { display: flex; justify-content: space-between; gap: 48px; padding-top: 
   .posts a { display: block; padding: 10px 0; margin: -10px 0; }
 }
 
-/* ========== Dark theme: the same paper, after dark ========== */
+/* ========== Dark theme: only when the reader picks it (default is light) ========== */
 :root { --on-brand: #faf9f5; color-scheme: light; }
 :root[data-theme="dark"] {
   color-scheme: dark;
@@ -304,16 +304,6 @@ footer { display: flex; justify-content: space-between; gap: 48px; padding-top: 
   --brand: #9db8dc; --brand-light: #c0d3ec; --brand-tint: #26303d;
   --near-black: #ecebe4; --dark-warm: #d2d0c7; --olive: #b5b2a6; --stone: #8f8c82;
   --border: #34322d; --border-soft: #2f2d29; --on-brand: #141413;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    color-scheme: dark;
-    --parchment: #1b1a17; --ivory: #23221e; --inline-code-bg: #2a2925;
-    --brand: #9db8dc; --brand-light: #c0d3ec; --brand-tint: #26303d;
-    --near-black: #ecebe4; --dark-warm: #d2d0c7; --olive: #b5b2a6; --stone: #8f8c82;
-    --border: #34322d; --border-soft: #2f2d29; --on-brand: #141413;
-  }
-  :root:not([data-theme="light"]) .hero-name img { mix-blend-mode: normal; border-radius: 50%; }
 }
 /* The avatar is black ink on white: it melts into the paper in light mode and
    keeps its own white ground (cut to a circle) after dark, unaltered */
@@ -333,10 +323,6 @@ footer { display: flex; justify-content: space-between; gap: 48px; padding-top: 
 .theme-toggle .sun { opacity: 0; transform: rotate(-90deg) scale(.6); }
 :root[data-theme="dark"] .theme-toggle .moon { opacity: 0; transform: rotate(90deg) scale(.6); }
 :root[data-theme="dark"] .theme-toggle .sun { opacity: 1; transform: none; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .theme-toggle .moon { opacity: 0; transform: rotate(90deg) scale(.6); }
-  :root:not([data-theme="light"]) .theme-toggle .sun { opacity: 1; transform: none; }
-}
 @media (hover: hover) { .theme-toggle:hover { color: var(--brand); } }
 .theme-toggle:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 6px; }
 @media (prefers-reduced-motion: reduce) { .theme-toggle svg { transition: none; } }
@@ -364,10 +350,6 @@ html[data-turn]::view-transition-group(root) { animation-duration: 0s; }
 .shot .only-dark { display: none; }
 :root[data-theme="dark"] .shot .only-light { display: none; }
 :root[data-theme="dark"] .shot .only-dark:not([hidden]) { display: block; }
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) .shot .only-light { display: none; }
-  :root:not([data-theme="light"]) .shot .only-dark:not([hidden]) { display: block; }
-}
 .gallery-bar { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; margin-top: 14px; }
 .gallery-bar .line { font-style: italic; color: var(--olive); font-size: 14px; margin: 0; }
 .tabs { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -414,7 +396,6 @@ html[data-turn]::view-transition-group(root) { animation-duration: 0s; }
 .maker { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 28px; align-items: start; }
 .maker img { width: 96px; height: 96px; mix-blend-mode: multiply; }
 :root[data-theme="dark"] .maker img { mix-blend-mode: normal; border-radius: 50%; }
-@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .maker img { mix-blend-mode: normal; border-radius: 50%; } }
 .maker h2 { font-weight: 500; font-size: 26px; margin: 0 0 8px; }
 .maker p { margin: 0 0 14px; color: var(--olive); }
 
@@ -728,7 +709,7 @@ html[data-turn]::view-transition-group(root) { animation-duration: 0s; }
 (function () {
   var root = document.documentElement, btn = document.querySelector(".theme-toggle");
   var isDark = function () {
-    return root.dataset.theme ? root.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+    return root.dataset.theme === "dark";  /* light unless the reader chose dark */
   };
   var label = function () {
     var t = isDark() ? "切換到淺色" : "切換到深色";
