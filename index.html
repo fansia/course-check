@@ -7,6 +7,11 @@
 <head>
 <meta charset="utf-8">
 <script>
+/* This page now lives at eric-yen.com. The GitHub Pages copy forwards there,
+   keeping the path, query and hash, so old links keep working. */
+if (location.hostname === "fansia.github.io") location.replace("https://eric-yen.com" + location.pathname + location.search + location.hash);
+</script>
+<script>
 /* Set the theme before first paint so a returning dark-mode reader never sees a white flash. */
 (function () {
   try { var t = localStorage.getItem("theme"); if (t === "dark" || t === "light") document.documentElement.dataset.theme = t; } catch (e) {}
@@ -45,18 +50,18 @@ addEventListener("pagereveal", function (e) {
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_TW">
 <link rel="icon" type="image/png" href="assets/favicon.png">
-<link rel="canonical" href="https://fansia.github.io/course-check/">
-<link rel="alternate" hreflang="zh-Hant" href="https://fansia.github.io/course-check/">
-<link rel="alternate" hreflang="en" href="https://fansia.github.io/course-check/en/">
-<link rel="alternate" hreflang="x-default" href="https://fansia.github.io/course-check/">
+<link rel="canonical" href="https://eric-yen.com/course-check/">
+<link rel="alternate" hreflang="zh-Hant" href="https://eric-yen.com/course-check/">
+<link rel="alternate" hreflang="en" href="https://eric-yen.com/course-check/en/">
+<link rel="alternate" hreflang="x-default" href="https://eric-yen.com/course-check/">
 <meta property="og:locale:alternate" content="en_US">
-<meta property="og:url" content="https://fansia.github.io/course-check/">
+<meta property="og:url" content="https://eric-yen.com/course-check/">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "這堂課值得上嗎",
-  "url": "https://fansia.github.io/course-check/",
+  "url": "https://eric-yen.com/course-check/",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Web",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },

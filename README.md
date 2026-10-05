@@ -1,6 +1,6 @@
 # 這堂課值得上嗎
 
-> **線上版 → https://fansia.github.io/course-check/**（English → `/course-check/en/`）
+> **線上版 → https://eric-yen.com/course-check/**（English → `/course-check/en/`）
 
 看到一堂線上課心動，但銷售頁只會講好話、評價牆全是廠商自己挑的。
 
