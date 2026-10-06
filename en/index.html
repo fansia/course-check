@@ -18,6 +18,7 @@ if (location.hostname === "fansia.github.io") location.replace("https://eric-yen
 <meta property="og:title" content="Is This Course Worth It? · Online course due diligence">
 <meta property="og:description" content="Fill in four fields and hand the due diligence to AI: it digs up real reviews and grades how much to trust each one.">
 <meta property="og:image" content="https://eric-yen.com/course-check/assets/icon-256.png">
+<meta name="twitter:card" content="summary">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="en_US">
 <link rel="icon" type="image/png" href="../assets/icon-256.png">
@@ -30,14 +31,23 @@ if (location.hostname === "fansia.github.io") location.replace("https://eric-yen
 <meta property="og:url" content="https://eric-yen.com/course-check/en/">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Is This Course Worth It?",
-  "url": "https://eric-yen.com/course-check/",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Web",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
-  "author": { "@type": "Person", "name": "Eric Yen" }
+ "@context": "https://schema.org",
+ "@type": "WebApplication",
+ "name": "Is This Course Worth It?",
+ "url": "https://eric-yen.com/course-check/",
+ "applicationCategory": "UtilitiesApplication",
+ "operatingSystem": "Web",
+ "offers": {
+  "@type": "Offer",
+  "price": "0",
+  "priceCurrency": "TWD"
+ },
+ "author": {
+  "@type": "Person",
+  "@id": "https://eric-yen.com/#eric",
+  "name": "Eric Yen",
+  "url": "https://eric-yen.com/"
+ }
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,6 +56,64 @@ if (location.hostname === "fansia.github.io") location.replace("https://eric-yen
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/product.css">
 
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "inLanguage": "en",
+ "url": "https://eric-yen.com/course-check/en/",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "Does it cost anything? Do I need an account?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No and no. Free, no sign-up, open source. Just open it and use it."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Does anyone collect what I type?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "The tool is a static page with no backend. What you type stays in your own browser for next time; when you send it, it goes to the AI you picked."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Why do some platforms need me to paste?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Prefill parameters are a convention, not a public API, and Gemini and Meta AI don't have one. So every button copies to your clipboard first; the prefill is a bonus, and nothing breaks if it stops working."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I trust the AI's verdict as is?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "No. Check the results yourself and open the cited links. That's why the prompt demands a real URL for every quote."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "What is the Threads version for?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "There are reviews on Threads that outside search engines can't reach, and the honest ones are often in the replies. The Threads version, used with Meta AI, only collects them without a verdict; paste the list back into the full report as grade B evidence."
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Can I modify it?",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Use it however you like, and share your changes too. The source is on GitHub."
+   }
+  }
+ ]
+}
+</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">

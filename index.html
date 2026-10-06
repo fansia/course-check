@@ -18,6 +18,7 @@ if (location.hostname === "fansia.github.io") location.replace("https://eric-yen
 <meta property="og:title" content="這堂課值得上嗎 · 線上課程盡職調查">
 <meta property="og:description" content="填四格，一鍵把課程盡職調查丟給 AI：去 PTT、Dcard、Threads 翻真實心得，幫每則評價標可信度。">
 <meta property="og:image" content="https://eric-yen.com/course-check/assets/icon-256.png">
+<meta name="twitter:card" content="summary">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="zh_TW">
 <link rel="icon" type="image/png" href="assets/icon-256.png">
@@ -30,14 +31,23 @@ if (location.hostname === "fansia.github.io") location.replace("https://eric-yen
 <meta property="og:url" content="https://eric-yen.com/course-check/">
 <script type="application/ld+json">
 {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "這堂課值得上嗎",
-  "url": "https://eric-yen.com/course-check/",
-  "applicationCategory": "UtilitiesApplication",
-  "operatingSystem": "Web",
-  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "TWD" },
-  "author": { "@type": "Person", "name": "Eric Yen" }
+ "@context": "https://schema.org",
+ "@type": "WebApplication",
+ "name": "這堂課值得上嗎",
+ "url": "https://eric-yen.com/course-check/",
+ "applicationCategory": "UtilitiesApplication",
+ "operatingSystem": "Web",
+ "offers": {
+  "@type": "Offer",
+  "price": "0",
+  "priceCurrency": "TWD"
+ },
+ "author": {
+  "@type": "Person",
+  "@id": "https://eric-yen.com/#eric",
+  "name": "Eric Yen",
+  "url": "https://eric-yen.com/"
+ }
 }
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -46,6 +56,64 @@ if (location.hostname === "fansia.github.io") location.replace("https://eric-yen
 <link rel="stylesheet" href="/assets/site.css">
 <link rel="stylesheet" href="/assets/product.css">
 
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "FAQPage",
+ "inLanguage": "zh-Hant",
+ "url": "https://eric-yen.com/course-check/",
+ "mainEntity": [
+  {
+   "@type": "Question",
+   "name": "要錢嗎？要註冊嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "都不用。免費、不用註冊、開源，打開就能用。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "我填的資料會被收走嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "工具本身是一個靜態網頁，沒有後端。填過的內容只存在你自己的瀏覽器，下次開還在；按下送出後，內容會交給你選的那一家 AI。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "為什麼有些平台要自己貼上？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "各家 AI 的預填參數是慣例，不是公開 API，Gemini 和 Meta AI 也沒有公開的預填參數。所以每個按鈕都一定會先複製到剪貼簿，預填只是加分項，失效了也不影響使用。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "AI 給的結論可以直接相信嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "不行。AI 產出的調查結果仍需自行查證，引用連結請點開確認。這也是為什麼 prompt 要求每則引用都附真實網址。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "Threads 版是做什麼的？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "Threads 上其實有評價，只是外部搜尋引擎抓不到，真話往往在留言串裡。Threads 版配 Meta AI 用，只負責把清單撈出來、不下結論，跑完再貼回完整版的報告當 B 級證據。"
+   }
+  },
+  {
+   "@type": "Question",
+   "name": "可以拿去改嗎？",
+   "acceptedAnswer": {
+    "@type": "Answer",
+    "text": "隨你用，改了拿去分享也可以。原始碼在 GitHub。"
+   }
+  }
+ ]
+}
+</script>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
